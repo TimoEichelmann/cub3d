@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:46:59 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/15 13:42:34 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:20:23 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 #include "./libft/libft.h"
 # include "nextline/get_next_line.h"
 # include "print/ft_printf.h"
-# include <math.h>
 
+# include <math.h>
+# include <sys/time.h>
 # include <unistd.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <X11/X.h>
 # include <X11/keysym.h>
@@ -93,6 +95,10 @@ typedef	struct s_player
 	double		time;
 	double		old_time;
 	int			end;
+	double		move_speed;
+	double		rot_speed;
+	int			move_f;
+	int			move_b;
 	t_data		*data;
 	t_cubdata	*cubdata;
 }	t_player;
@@ -108,7 +114,8 @@ int	on_destroy(t_data *data);
 void    window_create(t_data *data);
 void	free_cubdata(t_cubdata *cubdata);
 int	ft_atoi1(const char *p);
-int	algorithm(t_cubdata *d);
+int	algorithm(void *p);
 void	draw_verline(t_data *data, int x, int line_height, int side);
+int game(t_cubdata *cdata);
 
 #endif

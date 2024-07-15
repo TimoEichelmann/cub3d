@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:31:06 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/12 12:56:33 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:19:32 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void	err(char *str)
 {
 	while(*str)
-		write(2, str++, 1);
+	{
+		(void)!write(2, str++, 1);
+	}
 	exit (1);
 }
 
@@ -48,7 +50,7 @@ void	free_cubdata(t_cubdata *cubdata)
 void	err1(char *str, t_cubdata *cubdata)
 {
 	while(*str)
-		write(2, str++, 1);
+		(void)!write(2, str++, 1);
 	free_cubdata(cubdata);
 	exit (1);
 }

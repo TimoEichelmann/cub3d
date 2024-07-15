@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:46:13 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/12 15:14:06 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:19:57 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int main(int ac, char **ar)
 		return (printf("put correct map-- format:.cub\n"));
 	cubdata.map_height = 0;
 	storedata(&cubdata, ar[1]);
-	algorithm(&cubdata);
+	game(&cubdata);
 	//window_create(&data);
 	free_cubdata(&cubdata);
 	return 0;

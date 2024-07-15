@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:13:33 by teichelm          #+#    #+#             */
-/*   Updated: 2024/07/15 14:55:59 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:27:57 by timo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_player	*start_values(t_cubdata *d)
 	p->posy = d->p_y;
 	p->time = 0;
 	p->old_time = 0;
+	p->move_b = 0;
+	p->move_f = 0;
 	return (p);
 }
 
@@ -84,8 +86,8 @@ void	dda(t_player *p, t_cubdata *d, t_data *data)
 			dda.sidedisty = (dda.mapy + 1.0 - p->posy) * dda.deldisty;
 			dda.stepy = 1;
 		}
-		if (x == 450)
-			printf("%f %f %f %f\n", dda.sidedistx, dda.deldistx, dda.deldisty, dda.sidedisty);
+		// if (x == 450)
+		// 	printf("%f %f %f %f\n", dda.sidedistx, dda.deldistx, dda.deldisty, dda.sidedisty);
 		while (dda.hit == 0)
 		{
 			if (dda.sidedistx <= dda.sidedisty && dda.raydirx != 1e30)
@@ -100,25 +102,25 @@ void	dda(t_player *p, t_cubdata *d, t_data *data)
 				dda.mapy += dda.stepy;
 				dda.side = 1;
 			}
-			if (x == 450)
-				printf("pos: (%d|%d) %c\n", dda.mapx, dda.mapy, d->map[dda.mapy][dda.mapx]);
+			// if (x == 450)
+			// 	printf("pos: (%d|%d) %c\n", dda.mapx, dda.mapy, d->map[dda.mapy][dda.mapx]);
 			if (d->map[dda.mapy][dda.mapx] > '0')
 				dda.hit = 1;
 		}
-		if (x == 450)
-		{
-			printf("%f   %f %d\n", dda.sidedistx, dda.sidedisty, dda.side);
-		}
+		// if (x == 450)
+		// {
+		// 	printf("%f   %f %d\n", dda.sidedistx, dda.sidedisty, dda.side);
+		// }
 		if (dda.side == 0)
 			dda.perpwalldist = dda.sidedistx - dda.deldistx;
 		else
 			dda.perpwalldist = dda.sidedisty - dda.deldisty;
 		line_height = (SCREEN_HEIGHT / dda.perpwalldist);
-		if (x == 450)
-		{
-			printf("pos: (%d|%d) %c\n", dda.mapx, dda.mapy, d->map[dda.mapy][dda.mapx]);
-			printf("%f\n", dda.perpwalldist);
-		}
+		// if (x == 450)
+		// {
+		// 	printf("pos: (%d|%d) %c\n", dda.mapx, dda.mapy, d->map[dda.mapy][dda.mapx]);
+		// 	printf("%f\n", dda.perpwalldist);
+		// }
 		draw_verline(data, x, line_height, dda.side);
 		x++;
 	}
@@ -130,45 +132,49 @@ int	movement(int keycode, void *player)
 
 	
 	p = (t_player *)player;
-	if (keycode == 0xff54 && p->cubdata->map[(int)p->posy + 1][(int)p->posx] != '1')
-	{
-		p->posx += p->dirx;
-		p->posy += p->diry;
-		dda(p, p->cubdata, p->data);
-		mlx_clear_window(p->data->mlx, p->data->win);
-		mlx_put_image_to_window(p->data->mlx, p->data->win, p->data->img, 0 ,0);
-	}
-	if (keycode == 0xff52 && p->cubdata->map[(int)p->posy - 1][(int)p->posx] != '1')
-	{
-		p->posx -= p->dirx;
-		p->posy -= p->diry;
-		dda(p, p->cubdata, p->data);
-		mlx_clear_window(p->data->mlx, p->data->win);
-		mlx_put_image_to_window(p->data->mlx, p->data->win, p->data->img, 0 ,0);
-	}
+	if (keycode == 0xff54)
+		p->move_b = 1;
+	if (keycode == 0xff52)
+		p->move_f = 1;
 	return (0);
 }
 
-int	start_time()
+void	update(t_player *p)
 {
-	struct timeval	time;
-	int	
-
-	i = 0;
-	gettimeofday(&time, NULL);
-	start = time.tv_sec * 1000 + time.tv_usec / 1000;
+	if (p->move_f == 1)
+	{
+		p->posx += p->dirx * p->move_speed;
+		p->posy += p->diry * p->move_speed;
+		p->move_f = 0;
+	}
+	if (p->move_b == 1)
+	{
+		p->posx -= p->dirx * p->move_speed;
+		p->posy -= p->diry * p->move_speed;
+	 	p->move_b = 0;
+	}
 }
 
-int algorithm(t_player *p)
+int algorithm(void *pl)
 {
-	int	old_time;
-	int	time;
+	struct timeval	start;
+	struct timeval	end;
+	double			delta_time;
+	t_player		*p;
 
-	
+	p = (t_player *)pl;
+	gettimeofday(&start, NULL);
 	while (1)
 	{
+		gettimeofday(&end, NULL);
+		delta_time = ((end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec)) / 1000000.0;
+		p->move_speed = 5.0 * delta_time;
+		p->rot_speed = 3.0 * delta_time;
+		update(p);
 		dda(p, p->cubdata, p->data);
-		
+		mlx_put_image_to_window(p->data->mlx, p->data->win, p->data->img, 0, 0);
+		gettimeofday(&start, NULL);
+		usleep(1000000 / 30);
 	}
 	return (0);
 }
@@ -188,8 +194,8 @@ int game(t_cubdata *cdata)
 	data->img = mlx_new_image(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bpb, &data->sl, &data->endian);
 	dda(p, cdata, data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-	mlx_key_hook(data->win, movement, p);
+	mlx_put_image_to_window(p->data->mlx, p->data->win, p->data->img, 0, 0);
 	mlx_loop_hook(data->mlx, algorithm, p);
+	mlx_key_hook(data->win, movement, p);
 	mlx_loop(data->mlx);
 }
