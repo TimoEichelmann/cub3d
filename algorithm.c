@@ -6,7 +6,7 @@
 /*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:13:33 by teichelm          #+#    #+#             */
-/*   Updated: 2024/07/12 17:05:18 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:55:59 by teichelm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_player	*start_values(t_cubdata *d)
 		p->diry = 1 * sign;
 		p->dirx = 0;
 	}
+	p->end = 0;
 	p->posx = d->p_x;
 	p->posy = d->p_y;
 	p->time = 0;
@@ -148,25 +149,47 @@ int	movement(int keycode, void *player)
 	return (0);
 }
 
-int algorithm(t_cubdata *d)
+int	start_time()
+{
+	struct timeval	time;
+	int	
+
+	i = 0;
+	gettimeofday(&time, NULL);
+	start = time.tv_sec * 1000 + time.tv_usec / 1000;
+}
+
+int algorithm(t_player *p)
+{
+	int	old_time;
+	int	time;
+
+	
+	while (1)
+	{
+		dda(p, p->cubdata, p->data);
+		
+	}
+	return (0);
+}
+
+int game(t_cubdata *cdata)
 {
 	t_player	*p;
 	t_data		*data;
 
 	data = malloc(sizeof(t_data));
-	p = start_values(d);
-	p->cubdata = d;
+	p = start_values(cdata);
+	p->cubdata = cdata;
 	p->data = data;
 	data->addr = NULL;
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3d");
 	data->img = mlx_new_image(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	data->addr = mlx_get_data_addr(data->img, &data->bpb, &data->sl, &data->endian);
-	printf("hello \n");
-	dda(p, d, data);
-	printf("hello \n");
+	dda(p, cdata, data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	mlx_key_hook(data->win, movement, p);
+	mlx_loop_hook(data->mlx, algorithm, p);
 	mlx_loop(data->mlx);
-	return (0);
 }

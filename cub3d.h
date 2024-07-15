@@ -6,7 +6,7 @@
 /*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:46:59 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/12 16:50:09 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/15 13:42:34 by teichelm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,16 @@ typedef struct	s_image
 
 typedef	struct s_player
 {
-	double posx;
-	double posy;
-	double dirx;
-	double diry;
-	double planex;
-	double planey;
-	double time;
-	double old_time;
-	t_data	*data;
+	double		posx;
+	double		posy;
+	double		dirx;
+	double		diry;
+	double		planex;
+	double		planey;
+	double		time;
+	double		old_time;
+	int			end;
+	t_data		*data;
 	t_cubdata	*cubdata;
 }	t_player;
 
