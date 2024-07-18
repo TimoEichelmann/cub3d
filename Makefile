@@ -8,7 +8,7 @@ CFLAGS= -I$(INC) -O3 -I.. -g
 
 NAME= cub3d
 
-SRC = main.c nextline/get_next_line.c nextline/get_next_line_utils.c main_utl.c error.c map_data.c mlx_init.c algorithm.c draw.c
+SRC = main.c nextline/get_next_line.c nextline/get_next_line_utils.c main_utl.c error.c map_data.c mlx_init.c cub3d.c draw.c dda.c movement.c textures.c free.c map_data1.c dda_init.c
 
 LIBFT = libft.a
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 12:46:59 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/15 21:20:23 by timo             ###   ########.fr       */
+/*   Updated: 2024/07/18 15:01:50 by teichelm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "mlx/mlx.h"
 # include "mlx/mlx_int.h"
-#include "./libft/libft.h"
+# include "./libft/libft.h"
 # include "nextline/get_next_line.h"
 # include "print/ft_printf.h"
 
@@ -28,13 +28,15 @@
 # include <X11/keysym.h>
 # include <X11/keysymdef.h>
 
-#define	SCREEN_WIDTH 900
-#define SCREEN_HEIGHT 601
+# define SCREEN_WIDTH 1200
+# define SCREEN_HEIGHT 901
+# define M 1000000.0
 
-typedef	struct s_dda
+typedef struct s_dda
 {
-	int	mapx;
-	int	mapy;
+	int		x;
+	int		mapx;
+	int		mapy;
 	double	camx;
 	double	raydirx;
 	double	raydiry;
@@ -49,6 +51,17 @@ typedef	struct s_dda
 	int		side;
 }	t_dda;
 
+typedef struct s_image
+{
+	void	*img;
+	int		*data;
+	int		bpp;
+	int		size_l;
+	int		endian;
+	int		width;
+	int		height;
+}	t_image;
+
 typedef struct s_data
 {
 	void		*mlx;
@@ -57,34 +70,26 @@ typedef struct s_data
 	char		*addr;
 	int			bpb;
 	int			sl;
-	int			endian;
+	t_image		*imgs[4];
+	int			e;
 }		t_data;
 
 typedef struct s_cubdata
 {
-    char *north;
-    char *south;
-    char *west;
-    char *east;
-    char **floor_color;
-    char **ceiling_color;
-    char **map;
-    char    firstposition;
-    double p_x;
-    double p_y;
-    int map_height;
+	char	*north;
+	char	*south;
+	char	*west;
+	char	*east;
+	char	**floor_color;
+	char	**ceiling_color;
+	char	**map;
+	char	firstposition;
+	double	p_x;
+	double	p_y;
+	int		map_height;
 }	t_cubdata;
 
-typedef struct	s_image
-{
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_image;
-
-typedef	struct s_player
+typedef struct s_player
 {
 	double		posx;
 	double		posy;
@@ -99,23 +104,36 @@ typedef	struct s_player
 	double		rot_speed;
 	int			move_f;
 	int			move_b;
+	int			rotate_l;
+	int			rotate_r;
+	int			side;
 	t_data		*data;
 	t_cubdata	*cubdata;
 }	t_player;
 
-void	err1(char *str, t_cubdata *cubdata);
-void	err(char *str);
-char	*ft_strdup1(char *s);
-void	check_firstlastline(t_cubdata *cubdata, int i);
-char	check_mapdata(char *line, char *temp);
-void	checkerrormap(t_cubdata *cubdata);
-int	key_hook(int keycode, t_data *data);
-int	on_destroy(t_data *data);
-void    window_create(t_data *data);
-void	free_cubdata(t_cubdata *cubdata);
-int	ft_atoi1(const char *p);
-int	algorithm(void *p);
-void	draw_verline(t_data *data, int x, int line_height, int side);
-int game(t_cubdata *cdata);
+int			ft_free(void *pl);
+void		err1(char *str, t_cubdata *cubdata);
+void		err(char *str);
+char		*ft_strdup1(char *s);
+void		check_firstlastline(t_cubdata *cubdata, int i);
+char		check_mapdata(char *li, char *temp);
+void		checkerrormap(t_cubdata *cubdata);
+void		store_images(t_data *data, t_cubdata *cubdata);
+void		free_cubdata(t_cubdata *cubdata);
+int			ft_atoi1(const char *p);
+int			algorithm(void *p);
+int			cub3d(t_cubdata *cdata);
+void		ft_pxl_pos(t_data *img, int x, int y, int color);
+void		reset_image(t_data *img, t_player *p, int ind);
+int			get_color(char **color);
+t_player	*start_values(t_cubdata *d);
+void		dda(t_player *p);
+void		paint_wall(t_dda *dda, t_player *p);
+int			movement(int keycode, void *player);
+void		update(t_player *p);
+void		checkpatherror(t_cubdata *cubdata);
+void		checkcolorerror(t_cubdata *cubdata);
+int			check_case(t_player *p);
+void		init_dda(t_player *p, t_dda *dda, int x);
 
 #endif

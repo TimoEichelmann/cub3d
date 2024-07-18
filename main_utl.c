@@ -6,7 +6,7 @@
 /*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:33:01 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/12 13:18:26 by teichelm         ###   ########.fr       */
+/*   Updated: 2024/07/18 15:27:48 by teichelm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,12 @@ int	ft_atoi1(const char *p)
 	while (p[i] == ' ' || p[i] == '\f' || p[i] == '\n' || p[i] == '\r'
 		|| p[i] == '\t' || p[i] == '\v')
 		i++;
-	if (p[i + 1] >= '0' && p[i + 1] <= '9' && (p[i] == '-' || p[i] == '+'))
-	{
-		if (p[i] == '-')
-			sign = -1;
-		i++;
-	}
-	else if ((p[i] == '-' || p[i] == '+') && !(p[i + 1] >= '0' && p[i] <= '9'))
-		return (0);
 	while (p[i] && (p[i] != '\0' && p[i] != '\n'))
 	{
 		if (p[i] >= '0' && p[i] <= '9')
 			result = result * 10 + (p[i] - '0');
 		else
-			return(-2);
+			return (-2);
 		i++;
 	}
 	return (result * sign);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timo <timo@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: teichelm <teichelm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:31:06 by snegi             #+#    #+#             */
-/*   Updated: 2024/07/15 21:19:32 by timo             ###   ########.fr       */
+/*   Updated: 2024/07/16 16:38:36 by teichelm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 
 void	err(char *str)
 {
-	while(*str)
-	{
-		(void)!write(2, str++, 1);
-	}
+	while (*str)
+		write(2, str++, 1);
 	exit (1);
 }
 
 void	free_cubdata(t_cubdata *cubdata)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (cubdata ->north)
@@ -49,28 +47,56 @@ void	free_cubdata(t_cubdata *cubdata)
 
 void	err1(char *str, t_cubdata *cubdata)
 {
-	while(*str)
-		(void)!write(2, str++, 1);
+	while (*str)
+		write(2, str++, 1);
 	free_cubdata(cubdata);
 	exit (1);
 }
 
-int	key_hook(int keycode, t_data *data)
+void	checkcolorerror(t_cubdata *cubdata)
 {
-	if (keycode == 65307)
-		on_destroy(data);
-	return (0);
+	int	i;
+	int	j;
+	int	temp;
+
+	i = 0;
+	j = 0;
+	while (cubdata->ceiling_color && cubdata->ceiling_color[i]
+		&& cubdata->ceiling_color[i] != NULL)
+	{
+		temp = ft_atoi1(cubdata->ceiling_color[i++]);
+		if (temp < 0 || temp > 255)
+			err1("Incorrect ceiling colors\n", cubdata);
+	}
+	while (cubdata->floor_color && cubdata->floor_color[j]
+		&& cubdata->floor_color[j] != NULL)
+	{
+		temp = ft_atoi1(cubdata->floor_color[j++]);
+		if (temp < 0 || temp > 255)
+			err1("Incorrect floor colors\n", cubdata);
+	}
+	if (i != 3 || j != 3)
+		err1("Incorrect floor/ceiling colors\n", cubdata);
 }
 
-int	on_destroy(t_data *data)
+void	checkpatherror(t_cubdata *cubdata)
 {
-	int	index;
+	int	fd;
 
-	index = 0;
-	// free_cubdata(data->cubdata);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	exit(0);
-	return (0);
+	fd = open(cubdata->north, R_OK);
+	if (fd == -1)
+		err1("north texture path is incorrect\n", cubdata);
+	close(fd);
+	fd = open(cubdata->south, R_OK);
+	if (fd == -1)
+		err1("south texture path is incorrect\n", cubdata);
+	close(fd);
+	fd = open(cubdata->west, R_OK);
+	if (fd == -1)
+		err1("west texture path is incorrect\n", cubdata);
+	close(fd);
+	fd = open(cubdata->east, R_OK);
+	if (fd == -1)
+		err1("east texture path is incorrect\n", cubdata);
+	close(fd);
 }
