@@ -8,8 +8,6 @@
 ## Last update Tue May 15 15:44:41 2007 Olivier Crouzet
 ##
 
-## Please use configure script
-
 
 all	: do_configure
 

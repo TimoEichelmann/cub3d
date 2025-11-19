@@ -23,8 +23,8 @@ The program checks the **maps validity**, uses the Digital Differential Analyzer
 	- W: West
 	- E: East
 - the map is considered valid only if it is fully enclosed in walls, the player is inside the enclosed space and there are no open spaces which are not fully enclosed either inside or outside the map.
-	- valid: ```
-NO ./texture/CONCRETE_2A.xpm
+	- valid:
+```NO ./texture/CONCRETE_2A.xpm
 SO ./texture/VENT_1A.xpm
 WE ./texture/TECH_1A.xpm
 EA ./texture/TECH_3G.xpm
@@ -47,8 +47,8 @@ C 13,14,15
 10000011 1000001    100000001
 11111111 1111111    111111111```
 
-	- invalid: ```
-NO ./texture/CONCRETE_2A.xpm
+	- invalid:
+```NO ./texture/CONCRETE_2A.xpm
 SO ./texture/VENT_1A.xpm
 WE ./texture/TECH_1A.xpm
 EA ./texture/TECH_3G.xpm

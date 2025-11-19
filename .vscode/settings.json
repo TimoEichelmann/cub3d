@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"keysym.h": "c",
-		"x.h": "c",
-		"keysymdef.h": "c"
-	}
-}
