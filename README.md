@@ -76,3 +76,6 @@ Use **W** and **S** to move **forwards** and **backwards**. Accordingly **A** an
 ## Execution
 Compilation: ```make```
 Run: ```./cub3d "map_name"```
+
+## Authors
+Timo Eichelmann, [Sheetal Negi](https://github.com/snegi02)
