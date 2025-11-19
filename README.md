@@ -3,10 +3,6 @@
 ## Overview
 This project uses 42s own graphics library to create a Raycasting Game in pure C in the tradition of Wolfenstein.
 
-## Features
-- Custom Map making including choosing wall textures
-- Movement (W,A,S,D)
-
 ## Approach
 The program checks the **maps validity**, uses the Digital Differential Analyzer **(DDA)** Algorithm to render the view and draws it using the functions provided by the schools MLX library.
 
@@ -74,6 +70,8 @@ The program checks the **maps validity**, uses the Digital Differential Analyzer
 	10000011 1000001    100000001
 	11111111 1111111    111111111
 	```
+## Usage
+Use **W** and **S** to move **forwards** and **backwards**. Accordingly **A** and **D** provide turning to the **right** and **left**. **ESC** closes the window and exits the program cleanly.
 
 ## Execution
 Compilation: ```make```
