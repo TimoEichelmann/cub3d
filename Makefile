@@ -8,11 +8,15 @@ CFLAGS= -I$(INC) -O3 -I.. -g
 
 NAME= cub3d
 
+SRC_DIR= src
+
+FULL_SRC= $(addprefix $(SRC_DIR)/, $(SRC) )
+
 SRC = main.c nextline/get_next_line.c nextline/get_next_line_utils.c main_utl.c error.c map_data.c mlx_init.c cub3d.c draw.c dda.c movement.c textures.c free.c map_data1.c dda_init.c
 
 LIBFT = libft.a
 
-OBJ = $(SRC:%.c=%.o)
+OBJ = $(FULL_SRC:%.c=%.o)
 
 LFLAGS = -L.. -lmlx -L$(INCLIB) -lXext -lX11 -lm
 
@@ -39,9 +43,9 @@ $(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(OBJ) $(LIBFT) $(LFLAGS) -o $(NAME)
     
 clean:
-	rm -f $(NAME) $(OBJ) *~ core *.core
+	rm -f $(NAME) $(OBJ) $(LIBFT) *~ core *.core
 fclean:		clean
-					rm -rf $(NAME)
+					rm -rf $(NAME) $(LIBFT)
 	
 re: clean all
 
